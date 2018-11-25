@@ -11,7 +11,7 @@
 	<h2>환영합니다!</h2>
 	
 <%
-	String serverIP = "localhost"; //"192.168.35.3";
+	String serverIP = "localhost"; //ifconfig localhost
 	String dbname = "Shoppingmall_X";
 	String portNum = "3306";
 	String url = "jdbc:mysql://"+serverIP+":"+portNum+"/"+dbname;
