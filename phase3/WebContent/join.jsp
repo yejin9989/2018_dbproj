@@ -9,20 +9,9 @@
 <title>COMP322003/004: Databases</title>
 </head>
 <body>
-	<h2>환영합니다!</h2>
+	<h2>회원가입하기</h2>
 	
 <%
-/*	String serverIP = "localhost"; //ifconfig localhost
-	String dbname = "Shoppingmall_X";
-	String portNum = "3306";
-	String url = "jdbc:mysql://"+serverIP+":"+portNum+"/"+dbname;
-	String user = "root";
-	String pass = "yejin159357";
-	Connection conn = null;
-	PreparedStatement pstmt;
-	ResultSet rs;
-	Class.forName("com.mysql.jdbc.Driver");
-	conn = DriverManager.getConnection(url, user, pass);*/
 	Connection conn = DBUtil.getMySQLConnection();
 	PreparedStatement pstmt;
 	ResultSet rs;
