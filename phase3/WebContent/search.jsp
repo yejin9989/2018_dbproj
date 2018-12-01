@@ -186,12 +186,13 @@
 	</br>
 	</br>
 	</br>
-	<h3>전체상품</h3>
+	<h3><%out.println(request.getParameter("searchitem"));%>에 해당하는 상품입니다.</h3>
 		<%
 		conn = DBUtil.getMySQLConnection();
-		stmt = conn.createStatement();
-		sql = "select * from Item";
-		rs = stmt.executeQuery(sql);
+		String sitem = request.getParameter("searchitem");
+		sql = "select distinct * from Item where Item_name like '%"+sitem+"%'";
+		pstmt = conn.prepareStatement(sql);
+		rs = pstmt.executeQuery();
 		String Ino = "";
 		String Itemname = "";
 		String image = "";
@@ -218,9 +219,9 @@
 				</div>
 			</div>
 		</div>
-		<%}
+		<%} 
 		DBUtil.close(conn); conn = null;
-		DBUtil.close(stmt); stmt = null;
+		DBUtil.close(pstmt); pstmt = null;
 		DBUtil.close(rs); rs = null;
 		sql = "";
 		%>

@@ -49,7 +49,7 @@ Job VARCHAR(20));
 create table SHOPPINGBAG(
 Customer_id VARCHAR(15),
 Purchase_item VARCHAR(13),
-Quantity INT,
+Quantity INT NOT NULL,
 PRIMARY KEY(Customer_id, Purchase_item));
 
 create table CUSTOMEROPINION(

@@ -186,25 +186,34 @@
 	</br>
 	</br>
 	</br>
-	<h3>전체상품</h3>
+	<h3>상품정보</h3>
 		<%
 		conn = DBUtil.getMySQLConnection();
 		stmt = conn.createStatement();
-		sql = "select * from Item";
+		String ino = request.getParameter("Ino");
+		sql = "select * from Item where Item_number = " + ino;
 		rs = stmt.executeQuery(sql);
 		String Ino = "";
 		String Itemname = "";
 		String image = "";
+		String Importer = "";
+		String Item_prod_loca = "";
+		String Origin = "";
+		Date Expiration_date = null;
 		int Itemprice;
 		while(rs.next()){
 			Ino = rs.getString("Item_number");
 			Itemname = rs.getString("Item_name");
 			image = rs.getString("Item_image");
 			Itemprice = rs.getInt("Price");
+			Importer = rs.getString("Importer");
+			Item_prod_loca = rs.getString("Item_prod_loca");
+			Origin = rs.getString("Origin");
+			Expiration_date = rs.getDate("Expiration_date");
 		%>
 		<div class="box">
 			<div class="image-box">
-				<a href="board.jsp?Ino=<%=Ino %>">
+				<a href="Board.jsp?Ino=<%=Ino %>">
 					<img src="<%=image%>" width="300" height="300">
 				</a>
 			</div>
@@ -216,13 +225,38 @@
                 <div class="box-itemprice">
 				 	<%=Itemprice%>원
 				</div>
+				<div class="box-itemnumber">
+				 	상품번호 : <%=Ino%>
+				</div>
+				<div class="box-itemimporter">
+			    	수입자명 : <%if(Importer!=null) out.println(Importer);%>
+				</div>
+				<div class="box-itemprodloca">
+			    	생산지 : <%if(Item_prod_loca!=null) out.println(Item_prod_loca);%>
+				</div>
+				<div class="box-itemorigin">
+					원산지 : <%if(Origin!=null) out.println(Origin);%>
+				</div>
+				<div class="box-itemdate">
+					유통기한 : <%if(Expiration_date!=null) out.println(Expiration_date);%>
+				</div>
 			</div>
-		</div>
-		<%}
+			
+		<%
+		}
 		DBUtil.close(conn); conn = null;
 		DBUtil.close(stmt); stmt = null;
 		DBUtil.close(rs); rs = null;
 		sql = "";
 		%>
+			
+			<form method="post" action = "Cart.jsp?id=<%=id%>&Ino=<%=Ino%>">
+			<div class="shoppingcart">
+			수량
+			<input type = "number" name = num value="1" min="1">
+			<input type = "submit" value = "장바구니에 담기">
+			</div>
+			</form>
+		</div>
 </body>
 </html>

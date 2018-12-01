@@ -4,16 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Item</title>
+<title>Insert title here</title>
 </head>
 <body>
-<%
-	String id = request.getParameter("ID");
-	out.println(id + "<br/>");
-%>
-itemlist----<br/>
-item1<br/>
-item2<br/>
-...<br/>
+
 </body>
 </html>

@@ -5,7 +5,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <style>
 	#topMenu
 	{ 
@@ -90,30 +89,14 @@
 	   } 
 	   
 	   </style>
-
 <meta charset="UTF-8">
 <title>TMI :: TooMuchItem</title>
 </head>
 <body>
-	<h2>TMI :: TooMuchItem</h2>
+<h2>TMI :: TooMuchItem</h2>
 	<div class = "greetID">
 		<%	// 세션 가져와서 이름 띄우기
-			Statement stmt = null;
-			String id = session.getAttribute("userSession") + "";
-			Connection conn = DBUtil.getMySQLConnection();
-			String sql = "SELECT Name FROM CUSTOMER WHERE Id = ?";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
-			ResultSet rs = pstmt.executeQuery();
-			String name = "";
-			while(rs.next()){
-				name = rs.getString("Name");
-			}
-			DBUtil.close(conn); conn = null;
-			DBUtil.close(stmt); stmt = null;
-			DBUtil.close(pstmt); pstmt = null;
-			DBUtil.close(rs); rs = null;
-			sql = "";
+			String name = session.getAttribute("userSession") + "";
 		%>
 		<a href="Main.jsp" style="float:left;"> HOME </a>
 		<b> <%=name%>님 &nbsp; </b>
@@ -121,27 +104,27 @@
 		<% if(name.equals("admin")) { %>
 		<a href="Page_admin.jsp"> 관리자 </a> |	<%} %>
 		<a href="my_page.jsp">마이페이지</a>
-		<a href="shoppingbag.jsp">장바구니</a>
 		<a href="_logout.jsp"> 로그아웃 </a>
 		
 	</div>
 	
 	<form action = "search.jsp">
-	<input type = "search" name = "searchitem"/>
+	<input type = "text" name = "searchitem"/>
 	<input type= "submit" value = "SEARCH"/>
 	</form>
+	
 	
 	<nav id="topMenu" >
 		<ul>
 		<%
-			conn = DBUtil.getMySQLConnection();
-			stmt = conn.createStatement();
-			sql = "select distinct Main_category from CATEGORY";
-			rs = stmt.executeQuery(sql);
+			Connection conn1 = DBUtil.getMySQLConnection();
+			Statement stmt1 = conn1.createStatement();
+			String sql1 = "select distinct Main_category from CATEGORY";
+			ResultSet rs1 = stmt1.executeQuery(sql1);
 			String Maincate;
 			int count = 0;
-			while(rs.next()){
-			Maincate = rs.getString("Main_category");
+			while(rs1.next()){
+			Maincate = rs1.getString("Main_category");
 			if(count != 0)
 				out.println("<li>|</li>");
 		%>
@@ -149,33 +132,29 @@
 		<a class="menuLink"><%=Maincate%></a>
 		<ul class="submenu">
 		<%
-			Connection conn1 = DBUtil.getMySQLConnection();
-			String sql1 = "select distinct Sub_category from CATEGORY where Main_category = ?";
-			pstmt = conn1.prepareStatement(sql1);
+			Connection conn2 = DBUtil.getMySQLConnection();
+			String sql2 = "select distinct Sub_category from CATEGORY where Main_category = ?";
+			PreparedStatement pstmt = conn2.prepareStatement(sql2);
 			pstmt.setString(1, Maincate);
-			ResultSet rs1=pstmt.executeQuery();
+			ResultSet rs2=pstmt.executeQuery();
 			String subcate;
-			while(rs1.next()){
-				subcate = rs1.getString("Sub_category");
+			while(rs2.next()){
+				subcate = rs2.getString("Sub_category");
 		%>
 			<li>
 			<a class="submenuLink" href="cateresult.jsp?subcate=<%=subcate%>"><%=subcate%></a>
 			</li>
 			<%
 			}
-			DBUtil.close(conn1); conn1 = null;
-			DBUtil.close(pstmt); pstmt = null;
-			DBUtil.close(rs1); rs1 = null;
-			sql1 = "";
+			DBUtil.close(pstmt);
+			DBUtil.close(conn2);
 			%>
 		</ul>
 		</li>
 	<%
 	count++;}
-	DBUtil.close(conn); conn = null;
-	DBUtil.close(stmt); stmt = null;
-	DBUtil.close(rs); rs = null;
-	sql = "";
+	DBUtil.close(stmt1);
+	DBUtil.close(conn1);
 	%>
 	</ul>
 	</nav>
@@ -186,12 +165,14 @@
 	</br>
 	</br>
 	</br>
-	<h3>전체상품</h3>
+	<h3><%out.println(request.getParameter("subcate"));%>에 해당하는 상품입니다.</h3>
 		<%
-		conn = DBUtil.getMySQLConnection();
-		stmt = conn.createStatement();
-		sql = "select * from Item";
-		rs = stmt.executeQuery(sql);
+		Connection conn = DBUtil.getMySQLConnection();
+		String sql = "select * from Item where Name_of_category = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		String subcate = request.getParameter("subcate");
+		pstmt.setString(1, subcate);
+		ResultSet rs = pstmt.executeQuery();
 		String Ino = "";
 		String Itemname = "";
 		String image = "";
@@ -218,11 +199,6 @@
 				</div>
 			</div>
 		</div>
-		<%}
-		DBUtil.close(conn); conn = null;
-		DBUtil.close(stmt); stmt = null;
-		DBUtil.close(rs); rs = null;
-		sql = "";
-		%>
+		<%} %>
 </body>
 </html>

@@ -51,11 +51,14 @@
 
 <%
 	if(password.equals(pw)){
-		out.println("<script> alert('로그인 되었습니다. 환영합니다. :)'); </script>");
-		session.setAttribute("userSession", name);
-		response.sendRedirect("Main.jsp");
+		session.setAttribute("userSession", id);
+%>
+		<script>
+		alert('로그인 되었습니다. 환영합니다. :)'); 
+		document.location.href="Main.jsp";
+		</script>
 		
-	}else{
+	<%}else{
 		out.println("<script> alert(\"회원 정보가 없습니다\"); history.back(); </script>");
 	}
 %>
