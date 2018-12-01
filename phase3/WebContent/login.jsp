@@ -6,10 +6,10 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>COMP322003/004: Databases</title>
+<title>TMI :: TooMuchItem</title>
 </head>
 <body>
-	<h2>환영합니다!</h2>
+	<h2>TMI :: TooMuchItem</h2>
 	
 <%
 /*	String serverIP = "localhost"; //ifconfig localhost
@@ -23,40 +23,41 @@
 	ResultSet rs;
 	Class.forName("com.mysql.jdbc.Driver");
 	conn = DriverManager.getConnection(url, user, pass);*/
+	//jsp내에서 연결을 해결했었으나,DBUtil클래스를 생성해 중복을 피했음.
+	
 	Connection conn = DBUtil.getMySQLConnection();
 	PreparedStatement pstmt;
 	ResultSet rs;
 	
 	////////query1///////
 	String id = request.getParameter("ID");
-	String pw = request.getParameter("PW");
+	String pw = request.getParameter("PW"); //사용자가 login.html에서 입력한 id, 비밀번호
 	String query = "select * from customer where id = ?";
 	pstmt = conn.prepareStatement(query);
-	
 	pstmt.setString(1, id);
 	rs=pstmt.executeQuery();
-	String password;
-	rs.next();
-	password = rs.getString("PW");
+	String password = "";
+	String name = "";
+	while(rs.next()){
+		password = rs.getString("PW");
+		name = rs.getString("Name");
+	}
+
+	pstmt.close();
+	conn.close(); //비밀번호 정보를 가져왔으므로 디비 연결 종료  
+	
 	////////////////////
 %>
 
 <%
 	if(password.equals(pw)){
-		out.println("환영합니다!");
-		out.println("<script>");
-		out.println("alert('로그인 되었습니다. 환영합니다. :)')");
-		out.println("location.href='mypage.html");
-		out.println("</script>");
+		out.println("<script> alert('로그인 되었습니다. 환영합니다. :)'); </script>");
+		session.setAttribute("userSession", name);
+		response.sendRedirect("Main.jsp");
+		
 	}else{
-		out.println("일치하는 회원정보가 없습니다!");
-		out.println("<script>");
-		out.println("alert'해당하는 정보가 없습니다!)')");
-		out.println("location.href='main.jsp");
-		out.println("</script>");
+		out.println("<script> alert(\"회원 정보가 없습니다\"); history.back(); </script>");
 	}
-	pstmt.close();
-	conn.close();
 %>
 </body>
 </html>
