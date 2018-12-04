@@ -1,0 +1,51 @@
+트랜잭션 사이의 동시성 제어 기능
+: 여러 명의 사용자가 동시에 접속할 수 있도록 하며, 동시에 같은 제품을 구매할 수도 있음.
+
+Sol)
+
+트랜잭션(Transaction)은 여러 단계의 작업을 하나로 처리하는 것으로, 하나로 인식된 작업이 모두 성공적으로 끝나면 commit이 되고, 하나라도 문제가 발생하면 rollback 되어서 작업을 수행하기 전단계로 모든 과정이 회수된다.
+
+JDBC API의 Connection 객체와 JSP는 트랜잭션 처리에 대한 메소드들을 제공하는데 그 메소드에는 commit()과 rollback()이 있다. commit()은 트랜잭션의 commit을 수행하는 것이고, rollback()은 트랜잭션의 rollback을 수행하는 것이다.
+
+JDBC API의 Connection 객체에는 setAutoCommit(boolean autoCommit) 이란 메소드가 있는데 true로 기본값 설정이 되어 있다. 그리고 JSP는 기본적으로 오토커밋(Autocommit)이다. 따라서 commit 이 자동으로 수행되므로 여러 개의 쿼리 문장이 하나의 작업으로 수행되어야 하는 트랜잭션에서는 자동적으로 commit()이 일어나서는 안된다. 따라서 오토커밋을 setAutoCommit(false)로 지정해 자동으로 작동되지 못하게 해야한다.
+
+
+---------------------------------------------------------------------------
+
+Connection conn = null;  // null로 초기화 한다.
+
+PreparedStatement pstmt = null;
+
+
+try{
+
+
+conn.setAutoCommit(false);  // 오토커밋을 false로 지정한다.
+
+
+
+pstmt.executeUpdate("update .... ");  // 각 쿼리를 실행한다.
+
+pstmt.executeUpdate("insert ....");
+
+pstmt.executeUpdate("delete ... ");
+
+
+
+conn.commit(); // 실행된 결과를 commit() 한다.
+
+
+
+...
+
+}catch(SQLException sqle){
+
+if(conn!=null) try{conn.rollback();}catch(SQLException sqle){}
+// Exception 발생시 rollback 한다.
+
+}
+
+
+
+conn.setAutoCommit(true); // 오토 커밋을 true로 다시 변경한다.
+
