@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="java.sql.*, phase3.*"%>
-    <% request.setCharacterEncoding("UTF-8"); %>
 <%
 	Connection conn = DBUtil.getMySQLConnection();
 
@@ -70,6 +69,7 @@
 			
 	<br>
 	<input type="button" value="뒤로" onclick="location.href='Main.jsp'">
+	<input type="button" value="구매내역 확인" onclick="location.href='checkPurchase.jsp'">
 	<input type="button" value="회원정보 변경" onclick="location.href='ModifyPre.jsp'">
 	<input type="button" value="회원탈퇴" onclick="location.href='DeleteForm.jsp'">
 
