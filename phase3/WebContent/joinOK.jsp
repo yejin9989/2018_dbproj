@@ -1,18 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
 <%@ page language="java" import="java.text.*,java.sql.*" %>
 <%@ page language="java" import="phase3.*" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="EUC-KR">
 <title>Insert title here</title>
 </head>
 <body>
 <%
 	int age = 0;
 
-	request.setCharacterEncoding("UTF-8");
+	request.setCharacterEncoding("EUC-KR");
 	String id = request.getParameter("id");
 	String password = request.getParameter("password");
 	String sex = request.getParameter("sex");
@@ -30,6 +30,7 @@
 	pstmt.setString(1, id);
 	pstmt.setString(2, password);
 
+	try {
 	if(sex.equals("M")){
 		pstmt.setString(3, "M");
 		//out.println(sex);
@@ -38,7 +39,12 @@
 		pstmt.setString(3, "F");
 		//out.println(sex);
 	}
-	
+	} catch (Exception e) {
+		%>
+		<script>alert("°¡ÀÔ¿¡ ½ÇÆÐÇß½À´Ï´Ù."); 
+		<input type="button" value="Ã¹ È­¸éÀ¸·Î" onclick = "javascript:location.href='login.html'"/></script>
+	<% }%>
+<%
 	pstmt.setString(4, address);
 	
 	try {
@@ -51,15 +57,29 @@
 	pstmt.setString(6, name);
 	pstmt.setString(7, phonenumber);
 	pstmt.setString(8, job);
-	pstmt.executeUpdate();
-	
+	try {
+		pstmt.executeUpdate();
+%>
+	<br><br>
+	<font size="4" color = "gray">È¸¿ø°¡ÀÔµÇ¾ú½À´Ï´Ù!</font>
+	<br><br>
+	<input type="button" value="Ã¹ È­¸éÀ¸·Î" onclick = "javascript:location.href='login.html'"/>
+	<%
+	} catch (Exception e) {
+	%>
+	<script>
+	alert("°¡ÀÔ¿¡ ½ÇÆÐÇß½À´Ï´Ù."); 
+	<input type="button" value="Ã¹ È­¸éÀ¸·Î" onclick = "javascript:location.href='login.html'"/>
+	</script>
+	<% }%>
+<%
 	DBUtil.close(pstmt);
 	DBUtil.close(conn);
 %>
-<br><br>
-	<font size="4" color = "gray">íšŒì›ê°€ìž…ë˜ì—ˆìŠµë‹ˆë‹¤!</font>
-<br><br>
-	<input type="button" value="ì²« í™”ë©´ìœ¼ë¡œ" onclick = "javascript:location.href='login.html'"/>
 
+	<br><br>
+	<font size="4" color = "gray">°¡ÀÔ¿¡ ½ÇÆÐÇß½À´Ï´Ù.</font>
+	<br><br>
+	<input type="button" value="Ã¹ È­¸éÀ¸·Î" onclick = "javascript:location.href='login.html'"/>
 </body>
 </html>
