@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page language="java" import="java.text.*,java.sql.*" %>
 <%@ page language="java" import="phase3.*" %>
+<% request.setCharacterEncoding("UTF-8"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -99,13 +100,14 @@
 	<div class = "greetID">
 		<%	// 세션 가져와서 이름 띄우기
 			Statement stmt = null;
-			String id = session.getAttribute("userSession") + "";
+			String id = session.getAttribute("s_id") + "";
+			String name = session.getAttribute("userSession") + "";
 			Connection conn = DBUtil.getMySQLConnection();
 			String sql = "SELECT Name FROM CUSTOMER WHERE Id = ?";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			ResultSet rs = pstmt.executeQuery();
-			String name = "";
+			name = "";
 			while(rs.next()){
 				name = rs.getString("Name");
 			}

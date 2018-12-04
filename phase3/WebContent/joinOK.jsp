@@ -1,18 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page language="java" import="java.text.*,java.sql.*" %>
 <%@ page language="java" import="phase3.*" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
 <%
 	int age = 0;
 
-	request.setCharacterEncoding("EUC-KR");
+	request.setCharacterEncoding("UTF-8");
 	String id = request.getParameter("id");
 	String password = request.getParameter("password");
 	String sex = request.getParameter("sex");
@@ -57,9 +57,9 @@
 	DBUtil.close(conn);
 %>
 <br><br>
-	<font size="4" color = "gray">х╦©Ь╟║ют╣г╬З╫ю╢о╢ы!</font>
+	<font size="4" color = "gray">М ▄Л⌡░Й╟─Л·┘К░≤Л≈┬Л┼╣К▀┬К▀╓!</font>
 <br><br>
-	<input type="button" value="ц╧ х╜╦Ию╦╥н" onclick = "javascript:location.href='login.html'"/>
+	<input type="button" value="Л╡╚ М≥■К╘╢Л°╪К║°" onclick = "javascript:location.href='login.html'"/>
 
 </body>
 </html>

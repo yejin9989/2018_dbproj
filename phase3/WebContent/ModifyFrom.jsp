@@ -37,6 +37,7 @@
 	<form method="post" action="ModifyPro.jsp" name="userInfo" onsubmit="return checkValue()">
 
 <%
+
 	while(rs.next()) {
 		String id = rs.getString("Id");
 		String sex = rs.getString("Sex");
