@@ -40,6 +40,9 @@ String query = "";
 		/*주문번호 생성*/
 		/*code*/
 		
+		/*현재날짜 받아오기*/
+		/*code*/
+		
 		/*사용자 주소 근처 매장에 충분한 재고가 있는지 확인*/
 		request.setCharacterEncoding("UTF-8");
 		System.out.println(id);
@@ -68,26 +71,28 @@ String query = "";
 		rs.next();
 		String inum = "";
 		int quan = 0;
+		int Rnum = 0;
+		int stock = 0;
 			/*yes선택시 재고가 충분한 다른 매장에서 구입함*/
 		do{
-			inum = rs.getString("I.Item_number");
-			quan = rs.getInt("B.Quantity");
-
-			sql = "SELECT R.Retailer_number, H.Stock "+
-				"FROM RETAILER R, HAS_A H " +
-				"WHERE H.Stock >= ? " +
-				"AND H.Rno = R.Retailer_number " +
-				"AND H.Ino = ? " +
-				"ORDER BY R.Retailer_number DESC limit 1";
+			/*재고가 충분한 매장 찾기(1개만 선택)*/
+			sql = "SELECT C.Name, I.Item_number, H.Stock, B.Quantity, R.Retailer_name "+
+					"FROM SHOPPINGBAG B, CUSTOMER C, RETAILER R, HAS_A H, ITEM I "+
+					"WHERE B.Customer_id = C.Id "+
+					"AND H.Ino = B.Purchase_item "+
+					"AND H.Ino = I.Item_number "+
+					"AND H.Rno = R.Retailer_number "+
+					"AND EXISTS (SELECT NULL "+
+						    "WHERE H.Stock >= B.Quantity) "+
+					"AND C.Id = ? "+
+					"ORDER BY R.Retailer_name DESC limit 1 ";
 		
 			pstmt1 = conn.prepareStatement(sql);
-			pstmt1.setInt(1,quan);
-			pstmt1.setString(2,inum);
+			pstmt1.setString(1, id);
 			rs1 = pstmt1.executeQuery();
-			int Rnum = 0;
-			int stock = 0;
 			while(rs1.next()){
-			/*재고가 있는 매장 1개 고르기*/
+				inum = rs1.getString("I.Item_number");
+				quan = rs1.getInt("B.Quantity");
 				Rnum = rs1.getInt("R.Retailer_number");
 				stock = rs1.getInt("H.Stock");
 			}
@@ -121,6 +126,7 @@ String query = "";
 			rs = pstmt.executeQuery();
 			while(rs.next())
 			{
+				/*구매한 매장 재고 깎기*/
 				int Rnum = rs.getInt("R.Retailer_number");
 				int stock = rs.getInt("H.Stock");
 				int quan = rs.getInt("B.Quantity");
@@ -132,7 +138,6 @@ String query = "";
 				pstmt2.setString(2,inum);
 				pstmt2.setInt(3,Rnum);
 				pstmt2.executeUpdate();
-				/*구매한 매장 재고 깎기*/
 			}
 			/*구매내역 업데이트*/
 		}
