@@ -10,15 +10,12 @@
 <body>
 <%
    int age;
+
    String s_id = (String)session.getAttribute("s_id");
    String password = request.getParameter("password");
    String sex = request.getParameter("sex");
    String address = request.getParameter("address");
-   try {
-	   age = Integer.parseInt(request.getParameter("age"));
-   } catch(NumberFormatException e) {
-	   age = 0;
-   }
+   String age2 = request.getParameter("age");
    String name = request.getParameter("name");
    String phonenumber = request.getParameter("phonenumber");
    String job = request.getParameter("job");
@@ -29,18 +26,31 @@
    String sql = "UPDATE CUSTOMER SET PW = ?, Sex = ?, Address = ?, Age = ?, Name = ?, Phone_number = ?, Job = ? WHERE Id = ?";
    pstmt = conn.prepareStatement(sql);
    pstmt.setString(1,password);
-   pstmt.setString(2,sex);
-   pstmt.setString(3,address);
-   if(age == 0) {
-		pstmt.setString(4, "");
+   try {
+   if(sex.equals("M")){
+		pstmt.setString(2, "M");
+		//out.println(sex);
 	}
-	else pstmt.setInt(4, age);
+	else{
+		pstmt.setString(2, "F");
+		//out.println(sex);
+	}
+   } catch (NullPointerException e) {
+	   pstmt.setString(2, "");
+   }
+   pstmt.setString(3,address);
+   try {
+		age = Integer.parseInt(age2);
+		pstmt.setInt(4, age);
+	} catch(NumberFormatException e) {
+		pstmt.setInt(4, 0);
+	}
    pstmt.setString(5,name);
    pstmt.setString(6,phonenumber);
    pstmt.setString(7, job);
    pstmt.setString(8, s_id);
    
-	int check = pstmt.executeUpdate();
+	pstmt.executeUpdate();
 
 	DBUtil.close(pstmt);
 	DBUtil.close(conn);

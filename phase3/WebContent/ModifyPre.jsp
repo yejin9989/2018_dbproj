@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="java.sql.*, phase3.*"%>
+<% request.setCharacterEncoding("UTF-8"); %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>탈퇴 화면</title>
+<title>수정 화면</title>
 <script type="text/javascript">
 	function checkValue() {
 		if(!document.deleteform.password.value) {
@@ -19,7 +20,7 @@
 	<b><font size="6" color="gray">내 정보</font></b>
 	<br><br><br>
 	
-	<form name="deleteform" method="post" action="DeletePro.jsp"
+	<form name="modifypreview" method="post" action="ModifyFrom.jsp"
 		onsubmit="return checkValue()">
 		
 		<table>
@@ -31,7 +32,7 @@
 		
 		<br>
 		<input type="button" value="취소" onclick="location.href='Main.jsp'">
-		<input type="submit" value="탈퇴" />
+		<input type="submit" value="확인" />
 	</form>
 </body>
 </html>
