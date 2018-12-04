@@ -13,23 +13,35 @@
 		
 		Connection conn = DBUtil.getMySQLConnection();
 		
-		String sql = "delete from CUSTOMER where Id = ?, PW = ?";
+		String sql = "delete a from ORDER_LIST a INNER JOIN ORDER1 b ON b.Order_number = a.Order_num WHERE b.Cid = ? AND a.Order_num = b.Order_number";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, id);
+		pstmt.executeUpdate();
 		
+		sql = "delete a from ORDER1 a INNER JOIN CUSTOMER b ON b.Id = a.Cid where a.Cid = ? AND b.Id = a.Cid";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, id);
+		pstmt.executeUpdate();
+		
+		sql = "delete a from SHOPPINGBAG a INNER JOIN CUSTOMER b ON b.Id = a.Customer_id where b.Id = ? AND b.Id = a.Customer_id";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, id);
+		pstmt.executeUpdate();
+		
+		sql = "delete from CUSTOMER where Id = ? AND PW = ?";
+		pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, id);
 		pstmt.setString(2, pw);
 		int check = pstmt.executeUpdate();
 		
-		if(check == 1) {
-			conn.commit();
 	%>
 		<br><br>
 		<b><font size="4" color = "gray">회원정보가 삭제되었습니다.</font></b>
 		<br><br><br>
 		
-		<input type="button" value="확인" onclick = "location.href='main.html'">
+		<input type="button" value="확인" onclick = "location.href='login.html'">
 	<%
-		}else {
+		if(check <= 0) {
 	%>
 		<script>
 			alert("비밀번호가 맞지 않습니다.");
