@@ -35,7 +35,7 @@ String query = "";
 		%>
 		<script>
 			alert('장바구니에 구매할 제품이 없습니다!')
-			history.back();
+			document.location.href="Main.jsp"; 
 		</script>
 		<%
 		}
@@ -65,6 +65,8 @@ String query = "";
 		DBUtil.close(pstmt);pstmt=null;
 		DBUtil.close(rs);rs=null;
 		query = "";
+
+		System.out.println(order_num);
 		/*code*/
 		
 		
@@ -86,12 +88,15 @@ String query = "";
 		pstmt = conn.prepareStatement(query);
 		pstmt.setString(1, id);
 		rs = pstmt.executeQuery();
-		if(rs.isBeforeFirst()){//근처 매장에 재고가 부족한 제품이 있다.%>
+		if(rs.isBeforeFirst()){//근처 매장에 재고가 부족한 제품이 있다.
+			
+			/*
 	<script>
 			if(!confirm('근처 매장의 재고가 모두 소진되어 구매할 수 없습니다. 재고가 있는 타 지역 매장에서 구매 하시겠습니까?'))
 				document.location.href="Main.jsp"; //No선택시 메인화면으로 돌아가기
 	</script>
-		<%
+				*/
+		
 			rs.next();
 			String inum = "";
 			int quan = 0;
@@ -99,7 +104,7 @@ String query = "";
 			int stock = 0;
 			/*yes선택시 재고가 충분한 다른 매장에서 구입함*/
 			/*재고가 충분한 매장 찾기(1개만 선택)*/
-			sql = "SELECT R.Retailer_name "+
+			sql = "SELECT R.Retailer_number "+
 					"FROM SHOPPINGBAG B, CUSTOMER C, RETAILER R, HAS_A H, ITEM I "+
 					"WHERE B.Customer_id = C.Id "+
 					"AND H.Ino = B.Purchase_item "+
@@ -112,6 +117,15 @@ String query = "";
 			pstmt1 = conn.prepareStatement(sql);
 			pstmt1.setString(1, id);
 			rs1 = pstmt1.executeQuery();
+			if(!rs1.isBeforeFirst()){
+				/*재고가 있는 매장이 없다 : 돌아가기*/
+				%>
+				<script>
+					alert('현재 재고가 충분한 매장이 없습니다.')
+					document.location.href="Main.jsp"; 
+				</script>
+				<%
+				}
 			while(rs1.next()){ //구매할 매장 정보 가져오기
 				Rnum = rs1.getInt("R.Retailer_number");
 			}
@@ -258,10 +272,35 @@ String query = "";
 				pstmt2.setInt(3,Rnum);
 				pstmt2.executeUpdate();
 			}
+			
 		}
-		
+		sql = "";
+		DBUtil.close(pstmt); pstmt=null;
+		sql = "DELETE FROM SHOPPINGBAG WHERE Customer_id = ?";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, id);
+		pstmt.executeUpdate();
+		%>
+		<script>
+		alert('물품을 성공적으로 구매했습니다');
+		document.location.href="Main.jsp";
+		</script>");
+	<%
 	} catch(SQLException e){
-		e.printStackTrace();
-		}%>
+		e.printStackTrace();%>
+		<script>
+		alert('물품 구매에 실패했습니다');
+		document.location.href="Main.jsp";
+		</script>");
+	<%
+	} finally{
+		DBUtil.close(conn);
+		DBUtil.close(pstmt);
+		DBUtil.close(pstmt1);
+		DBUtil.close(pstmt2);
+		DBUtil.close(stmt);
+		DBUtil.close(rs);
+		DBUtil.close(rs1);
+	}%>
 </body>
 </html>

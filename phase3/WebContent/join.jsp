@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <title>회원 가입</title>
 <script type="text/javascript">
+<% request.setCharacterEncoding("UTF-8"); %>
 	function checkValue() {
 		var form = document.userInfo;
 		

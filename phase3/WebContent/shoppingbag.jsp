@@ -110,7 +110,7 @@
 		<a href="Main.jsp" style="float:left;"> HOME </a>
 		<b> <%=name%>님 &nbsp; </b>
 		
-		<% if(name.equals("admin")) { %>
+		<% if(id.equals("admin")) { %>
 		<a href="Page_admin.jsp"> 관리자 </a> |	<%} %>
 		<a href="my_page.jsp">마이페이지</a>
 		<a href="shoppingbag.jsp">장바구니</a>
@@ -193,15 +193,8 @@
 		int quan = 0;
 		int Itemprice = 0;
 		int totalprice = 0;%>
-		<tr>
-		<th colsapn="5">
-		<td>상품이미지</td>
-		<td>상품번호</td>
-		<td>상품이름</td>
-		<td>담은수량</td>
-		<td>가격</td>
-		</th>
-		</tr>
+		상품이미지 | 상품번호 | 상품이름 | 담은수량 | 가격
+		<br><br>
 		<%
 		while(rs.next()){
 			image = rs.getString("I.Item_image");
@@ -211,25 +204,17 @@
 			Itemprice = rs.getInt("I.Price");
 			totalprice = Itemprice * quan;
 		%>
-		<tr>
-		<td>
 			<div class="image-box">
 				<a href="board.jsp?Ino=<%=Ino %>">
-					<img src="<%=image%>" width="30" height="30">
+					<img src="<%=image%>" width="50" height="50">
 				</a>
 			</div>
-		</td>
-		<td>
 			<div class="box-itemnumber">
 			    	<%=Ino%>
 			</div>
-		</td>
-		<td>
 			<div class="box-itemname">
 			    	<%=Itemname%>
 			</div>
-		</td>
-		<td>
 		<form action="_shoppingbag.jsp?id=<%=id%>&Ino=<%=Ino%>" method="post">
             <div class="box-itemquan">
 				 <input type="number" name="num" value="<%=quan%>" min="1">개
@@ -237,13 +222,9 @@
 				 <a href="dropitem.jsp?id=<%=id%>&Ino=<%=Ino%>&num=<%=quan%>">X</a>
 			</div>
 		</form>
-		</td>
-		<td>
             <div class="box-itemprice">
 				 	<%=totalprice%>원
 			</div>
-		</td>
-		</tr>
 		<%}
 		
 		DBUtil.close(conn); conn = null;

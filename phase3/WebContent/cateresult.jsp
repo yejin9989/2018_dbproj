@@ -97,11 +97,12 @@
 	<div class = "greetID">
 		<%	// 세션 가져와서 이름 띄우기
 			String name = session.getAttribute("userSession") + "";
+			String id = session.getAttribute("s_id") + "";
 		%>
 		<a href="Main.jsp" style="float:left;"> HOME </a>
 		<b> <%=name%>님 &nbsp; </b>
 		
-		<% if(name.equals("admin")) { %>
+		<% if(id.equals("admin")) { %>
 		<a href="Page_admin.jsp"> 관리자 </a> |	<%} %>
 		<a href="my_page.jsp">마이페이지</a>
 		<a href="shoppingbag.jsp">장바구니</a>
@@ -110,7 +111,7 @@
 	</div>
 	
 	<form action = "search.jsp">
-	<input type = "text" name = "searchitem"/>
+	<input type = "search" name = "searchitem"/>
 	<input type= "submit" value = "SEARCH"/>
 	</form>
 	

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="phase3.*,java.sql.*,java.util.*"%>
+   <% request.setCharacterEncoding("UTF-8"); %>
 <%
 	ArrayList<MemberBean> memberList = new ArrayList<MemberBean>();
 	Connection conn = DBUtil.getMySQLConnection();

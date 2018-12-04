@@ -1,14 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page language="java" import="java.text.*,java.sql.*" %>
 <%@ page language="java" import="phase3.*" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
+<% request.setCharacterEncoding("UTF-8"); %>
 <%
 	int age = 0;
 
@@ -41,8 +42,8 @@
 	}
 	} catch (Exception e) {
 		%>
-		<script>alert("���Կ� �����߽��ϴ�."); 
-		<input type="button" value="ù ȭ������" onclick = "javascript:location.href='login.html'"/></script>
+		<script>alert("가입에 실패했습니다."); 
+		<input type="button" value="첫 화면으로" onclick = "javascript:location.href='login.html'"/></script>
 	<% }%>
 <%
 	pstmt.setString(4, address);
@@ -61,15 +62,15 @@
 		pstmt.executeUpdate();
 %>
 	<br><br>
-	<font size="4" color = "gray">ȸ�����ԵǾ����ϴ�!</font>
+	<font size="4" color = "gray">회원가입되었습니다!</font>
 	<br><br>
-	<input type="button" value="ù ȭ������" onclick = "javascript:location.href='login.html'"/>
+	<input type="button" value="첫 화면으로" onclick = "javascript:location.href='login.html'"/>
 	<%
 	} catch (Exception e) {
 	%>
 	<script>
-	alert("���Կ� �����߽��ϴ�."); 
-	<input type="button" value="ù ȭ������" onclick = "javascript:location.href='login.html'"/>
+	alert("가입에 실패했습니다."); 
+	<input type="button" value="첫 화면으로" onclick = "javascript:location.href='login.html'"/>
 	</script>
 	<% }%>
 <%
@@ -78,8 +79,8 @@
 %>
 
 	<br><br>
-	<font size="4" color = "gray">���Կ� �����߽��ϴ�.</font>
+	<font size="4" color = "gray">가입에 실패했습니다.</font>
 	<br><br>
-	<input type="button" value="ù ȭ������" onclick = "javascript:location.href='login.html'"/>
+	<input type="button" value="첫 화면으로" onclick = "javascript:location.href='login.html'"/>
 </body>
 </html>

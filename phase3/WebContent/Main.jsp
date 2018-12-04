@@ -109,7 +109,7 @@
 		<a href="Main.jsp" style="float:left;"> HOME </a>
 		<b> <%=name%>님 &nbsp; </b>
 		
-		<% if(name.equals("admin")) { %>
+		<% if(id.equals("admin")) { %>
 		<a href="Page_admin.jsp"> 관리자 </a> |	<%} %>
 		<a href="my_page.jsp">마이페이지</a>
 		<a href="shoppingbag.jsp">장바구니</a>
