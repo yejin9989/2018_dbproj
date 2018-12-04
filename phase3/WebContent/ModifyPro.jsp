@@ -40,26 +40,15 @@
    pstmt.setString(7, job);
    pstmt.setString(8, s_id);
    
-   int check = pstmt.executeUpdate();
-   conn.commit();
-   
-   if(check > 0) {
-%>
-	<br><br>
-	<b><font size="4" color = "gray">회원정보가 수정되었습니다.</font></b>
-	<br><br>
-	<input type="button" value="메인으로" onclick = "location.href='Main.jsp'">
-<%
-	}else {
-%>
-	<script>
-		alert("수정에 실패했습니다.");
-		<input type="button" value="확인" onclick = "location.href='my_page.jsp'">
-	</script>
-<%
-	}
+	int check = pstmt.executeUpdate();
+
 	DBUtil.close(pstmt);
 	DBUtil.close(conn);
 %>
+
+<br><br>
+	<font size="4" color = "gray">회원정보가 수정되었습니다.</font>
+<br><br>
+	<input type="button" value="메인으로" onclick = "javascript:location.href='Main.jsp'"/>
 </body>
 </html>

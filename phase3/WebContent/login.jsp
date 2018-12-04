@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+    pageEncoding="UTF-8"%>
 <%@ page language="java" import="java.text.*,java.sql.*" %>
 <%@ page language="java" import="phase3.*" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>TMI :: TooMuchItem</title>
 </head>
 <body>
@@ -23,7 +23,7 @@
 	ResultSet rs;
 	Class.forName("com.mysql.jdbc.Driver");
 	conn = DriverManager.getConnection(url, user, pass);*/
-	//jsp³»¿¡¼­ ¿¬°áÀ» ÇØ°áÇß¾úÀ¸³ª,DBUtilÅ¬·¡½º¸¦ »ı¼ºÇØ Áßº¹À» ÇÇÇßÀ½.
+	//jspë‚´ì—ì„œ ì—°ê²°ì„ í•´ê²°í–ˆì—ˆìœ¼ë‚˜,DBUtilí´ë˜ìŠ¤ë¥¼ ìƒì„±í•´ ì¤‘ë³µì„ í”¼í–ˆìŒ.
 	
 	Connection conn = DBUtil.getMySQLConnection();
 	PreparedStatement pstmt;
@@ -31,7 +31,7 @@
 	
 	////////query1///////
 	String id = request.getParameter("ID");
-	String pw = request.getParameter("PW"); //»ç¿ëÀÚ°¡ login.html¿¡¼­ ÀÔ·ÂÇÑ id, ºñ¹Ğ¹øÈ£
+	String pw = request.getParameter("PW"); //ì‚¬ìš©ìê°€ login.htmlì—ì„œ ì…ë ¥í•œ id, ë¹„ë°€ë²ˆí˜¸
 	String query = "select * from CUSTOMER where Id = ?";
 	pstmt = conn.prepareStatement(query);
 	pstmt.setString(1, id);
@@ -44,20 +44,20 @@
 	}
 
 	pstmt.close();
-	conn.close(); //ºñ¹Ğ¹øÈ£ Á¤º¸¸¦ °¡Á®¿ÔÀ¸¹Ç·Î µğºñ ¿¬°á Á¾·á  
+	conn.close(); //ë¹„ë°€ë²ˆí˜¸ ì •ë³´ë¥¼ ê°€ì ¸ì™”ìœ¼ë¯€ë¡œ ë””ë¹„ ì—°ê²° ì¢…ë£Œ  
 	
 	////////////////////
 %>
 
 <%
 	if(password.equals(pw)){
-		out.println("<script> alert('·Î±×ÀÎ µÇ¾ú½À´Ï´Ù. È¯¿µÇÕ´Ï´Ù. :)'); </script>");
+		out.println("<script> alert('ë¡œê·¸ì¸ ë˜ì—ˆìŠµë‹ˆë‹¤. í™˜ì˜í•©ë‹ˆë‹¤. :)'); </script>");
 		session.setAttribute("s_id", id);
 		session.setAttribute("userSession", name);
 		response.sendRedirect("Main.jsp");
 		
 	}else{
-		out.println("<script> alert(\"È¸¿ø Á¤º¸°¡ ¾ø½À´Ï´Ù\"); history.back(); </script>");
+		out.println("<script> alert(\"íšŒì› ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤\"); history.back(); </script>");
 	}
 %>
 </body>

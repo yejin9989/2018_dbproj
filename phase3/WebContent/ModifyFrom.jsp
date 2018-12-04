@@ -32,7 +32,7 @@
 	<b><font size="6" color="gray">회원정보 수정</font></b>
 	<br><br><br>
 	
-	<form method="post" action="Main.jsp?contentPage=ModifyPro.jsp" name="userInfo" onsubmit="return checkValue()">
+	<form method="post" action="ModifyPro.jsp" name="userInfo" onsubmit="return checkValue()">
 	
 	<table>
 		<tr>
@@ -72,7 +72,7 @@
 		</tr>
 	</table>
 	<br><br>
-	<input type="button" value="취소" onclick="location.href='Main.jsp'">
+	<input type="button" value="취소" onclick="javascript:location.href='Main.jsp'">
 	<input type="submit" value="수정"/>
 	</form>
 </body>
