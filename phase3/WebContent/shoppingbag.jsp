@@ -259,5 +259,10 @@
 		DBUtil.close(pstmt); pstmt = null;
 		DBUtil.close(rs); rs = null;
 		sql = "";%>
+		
+		<form action="purchase.jsp?id=<%=id%>" method="post">
+		<input type="submit" value="구매하기">
+		</form>
+		
 </body>
 </html>
