@@ -9,11 +9,12 @@
 	
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
-	String sql = "SELECT * FROM CUSTOMER WHERE ID = ?";
+	String sql = "SELECT * FROM CUSTOMER WHERE Id = ?";
 	
 	pstmt = conn.prepareStatement(sql);
 	pstmt.setString(1, s_id);
 	rs = pstmt.executeQuery();
+	rs.next();
 %>
 <meta charset="UTF-8">
 <title>회원정보 수정화면</title>
@@ -36,7 +37,7 @@
 	<table>
 		<tr>
 			<td id="title">아이디</td>
-			<td id="title"><%=rs.getString("ID")%></td>
+			<td id="title"><%=rs.getString("Id")%></td>
 		</tr>
 		<tr>
 			<td id="title">비밀번호</td>

@@ -26,7 +26,7 @@
    Connection conn = DBUtil.getMySQLConnection();
    PreparedStatement pstmt = null;
    
-   String sql = "UPDATE CUSTOMER SET PW = ?, Sex = ?, Address = ?, Age = ?, Name = ?, Phone_number = ?, Job = ? WHERE ID = ?";
+   String sql = "UPDATE CUSTOMER SET PW = ?, Sex = ?, Address = ?, Age = ?, Name = ?, Phone_number = ?, Job = ? WHERE Id = ?";
    pstmt = conn.prepareStatement(sql);
    pstmt.setString(1,password);
    pstmt.setString(2,sex);
@@ -41,9 +41,9 @@
    pstmt.setString(8, s_id);
    
    int check = pstmt.executeUpdate();
+   conn.commit();
    
-   if(check == 1) {
-		conn.commit();
+   if(check > 0) {
 %>
 	<br><br>
 	<b><font size="4" color = "gray">회원정보가 수정되었습니다.</font></b>

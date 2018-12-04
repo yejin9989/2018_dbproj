@@ -1,197 +1,124 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
 <%@ page language="java" import="java.text.*,java.sql.*" %>
 <%@ page language="java" import="phase3.*" %>
+
 <!DOCTYPE html>
 <html>
 <head>
-
 <style>
 	#topMenu
 	{ 
-	height: 30px; /* ë©”ì¸ ë©”ë‰´ì˜ ë†’ì´ */
-	width: 850px; /* ë©”ì¸ ë©”ë‰´ì˜ ë„“ì´ */ 
+	height: 30px; /* ¸ÞÀÎ ¸Þ´ºÀÇ ³ôÀÌ */
+	width: 850px; /* ¸ÞÀÎ ¸Þ´ºÀÇ ³ÐÀÌ */ 
 	}
 	
 	#topMenu ul 
 	{ 
-	/* ë©”ì¸ ë©”ë‰´ ì•ˆì˜ ulì„ ì„¤ì •í•¨: ìƒìœ„ë©”ë‰´ì˜ ul+í•˜ìœ„ ë©”ë‰´ì˜ ul */ 
-	list-style-type: none; /* ë©”ì¸ ë©”ë‰´ ì•ˆì˜ ul ë‚´ë¶€ì˜ ëª©ë¡ í‘œì‹œë¥¼ ì—†ì• ì¤Œ */ 
-	margin: 0px; /* ë©”ì¸ ë©”ë‰´ ì•ˆì˜ ulì˜ marginì„ ì—†ì•° */ 
-	padding: 0px; /* ë©”ì¸ ë©”ë‰´ ì•ˆì˜ ulì˜ paddingì„ ì—†ì•° */ 
+	/* ¸ÞÀÎ ¸Þ´º ¾ÈÀÇ ulÀ» ¼³Á¤ÇÔ: »óÀ§¸Þ´ºÀÇ ul+ÇÏÀ§ ¸Þ´ºÀÇ ul */ 
+	list-style-type: none; /* ¸ÞÀÎ ¸Þ´º ¾ÈÀÇ ul ³»ºÎÀÇ ¸ñ·Ï Ç¥½Ã¸¦ ¾ø¾ÖÁÜ */ 
+	margin: 0px; /* ¸ÞÀÎ ¸Þ´º ¾ÈÀÇ ulÀÇ marginÀ» ¾ø¾Ú */ 
+	padding: 0px; /* ¸ÞÀÎ ¸Þ´º ¾ÈÀÇ ulÀÇ paddingÀ» ¾ø¾Ú */ 
 	}
 	
 	#topMenu ul li { 
-	/* ë©”ì¸ ë©”ë‰´ ì•ˆì— ul íƒœê·¸ ì•ˆì— ìžˆëŠ” li íƒœê·¸ì˜ ìŠ¤íƒ€ì¼ ì ìš©(ìƒìœ„/í•˜ìœ„ë©”ë‰´ ëª¨ë‘) */ 
-	color: white; /* ê¸€ì”¨ ìƒ‰ì„ í°ìƒ‰ìœ¼ë¡œ ì„¤ì • */ 
-	background-color: #2d2d2d; /* ë°°ê²½ ìƒ‰ì„ RGB(2D2D2D)ë¡œ ì„¤ì • */ 
-	float: left; /* ì™¼ìª½ìœ¼ë¡œ ë‚˜ì—´ë˜ë„ë¡ ì„¤ì • */ 
-	line-height: 30px; /* í…ìŠ¤íŠ¸ í•œ ì¤„ì˜ ë†’ì´ë¥¼ 30pxë¡œ ì„¤ì • */ 
-	vertical-align: middle; /* ì„¸ë¡œ ì •ë ¬ì„ ê°€ìš´ë°ë¡œ ì„¤ì • */ 
-	text-align: center; /* í…ìŠ¤íŠ¸ë¥¼ ê°€ìš´ë°ë¡œ ì •ë ¬ */ 
-	position: relative; /* í•´ë‹¹ li íƒœê·¸ ë‚´ë¶€ì˜ top/left í¬ì§€ì…˜ ì´ˆê¸°í™” */ 
+	/* ¸ÞÀÎ ¸Þ´º ¾È¿¡ ul ÅÂ±× ¾È¿¡ ÀÖ´Â li ÅÂ±×ÀÇ ½ºÅ¸ÀÏ Àû¿ë(»óÀ§/ÇÏÀ§¸Þ´º ¸ðµÎ) */ 
+	color: white; /* ±Û¾¾ »öÀ» Èò»öÀ¸·Î ¼³Á¤ */ 
+	background-color: #2d2d2d; /* ¹è°æ »öÀ» RGB(2D2D2D)·Î ¼³Á¤ */ 
+	float: left; /* ¿ÞÂÊÀ¸·Î ³ª¿­µÇµµ·Ï ¼³Á¤ */ 
+	line-height: 30px; /* ÅØ½ºÆ® ÇÑ ÁÙÀÇ ³ôÀÌ¸¦ 30px·Î ¼³Á¤ */ 
+	vertical-align: middle; /* ¼¼·Î Á¤·ÄÀ» °¡¿îµ¥·Î ¼³Á¤ */ 
+	text-align: center; /* ÅØ½ºÆ®¸¦ °¡¿îµ¥·Î Á¤·Ä */ 
+	position: relative; /* ÇØ´ç li ÅÂ±× ³»ºÎÀÇ top/left Æ÷Áö¼Ç ÃÊ±âÈ­ */ 
 	} 
 	
 	.menuLink, .submenuLink { 
-	/* ìƒìœ„ ë©”ë‰´ì™€ í•˜ìœ„ ë©”ë‰´ì˜ a íƒœê·¸ì— ê³µí†µìœ¼ë¡œ ì„¤ì •í•  ìŠ¤íƒ€ì¼ */ 
-	text-decoration:none; /* a íƒœê·¸ì˜ ê¾¸ë°ˆ íš¨ê³¼ ì œê±° */ 
-	display: block; /* a íƒœê·¸ì˜ í´ë¦­ ë²”ìœ„ë¥¼ ë„“íž˜ */ 
-	width: 150px; /* ê¸°ë³¸ ë„“ì´ë¥¼ 150pxë¡œ ì„¤ì • */ 
-	font-size: 12px; /* í°íŠ¸ ì‚¬ì´ì¦ˆë¥¼ 12pxë¡œ ì„¤ì • */ 
-	font-weight: bold; /* í°íŠ¸ë¥¼ êµµê²Œ ì„¤ì • */
-	font-family: "Trebuchet MS", Dotum; /* ê¸°ë³¸ í°íŠ¸ë¥¼ ì˜ì–´/í•œê¸€ ìˆœì„œëŒ€ë¡œ ì„¤ì • */ 
-	}
+	/* »óÀ§ ¸Þ´º¿Í ÇÏÀ§ ¸Þ´ºÀÇ a ÅÂ±×¿¡ °øÅëÀ¸·Î ¼³Á¤ÇÒ ½ºÅ¸ÀÏ */ 
+	text-decoration:none; /* a ÅÂ±×ÀÇ ²Ù¹Ò È¿°ú Á¦°Å */ 
+	display: block; /* a ÅÂ±×ÀÇ Å¬¸¯ ¹üÀ§¸¦ ³ÐÈû */ 
+	width: 150px; /* ±âº» ³ÐÀÌ¸¦ 150px·Î ¼³Á¤ */ 
+	font-size: 12px; /* ÆùÆ® »çÀÌÁî¸¦ 12px·Î ¼³Á¤ */ 
+	font-weight: bold; /* ÆùÆ®¸¦ ±½°Ô ¼³Á¤ */ 
+	font-family: "Trebuchet MS", Dotum; /* ±âº» ÆùÆ®¸¦ ¿µ¾î/ÇÑ±Û ¼ø¼­´ë·Î ¼³Á¤ */ 
+	} 
 	
 	.menuLink { 
-	/* ìƒìœ„ ë©”ë‰´ì˜ ê¸€ì”¨ìƒ‰ì„ í°ìƒ‰ìœ¼ë¡œ ì„¤ì • */ 
+	/* »óÀ§ ¸Þ´ºÀÇ ±Û¾¾»öÀ» Èò»öÀ¸·Î ¼³Á¤ */ 
 	color: white; 
 	} 
 	
 	.topMenuLi:hover .menuLink { 
-	/* ìƒìœ„ ë©”ë‰´ì˜ liì— ë§ˆìš°ìŠ¤ì˜¤ë²„ ë˜ì—ˆì„ ë•Œ ìŠ¤íƒ€ì¼ ì„¤ì • */ 
-	color: red; /* ê¸€ì”¨ ìƒ‰ ë¹¨ê°„ìƒ‰ */ 
-	background-color: #4d4d4d; /* ë°°ê²½ìƒ‰ì„ ë°ì€ íšŒìƒ‰ìœ¼ë¡œ ì„¤ì • */ 
+	/* »óÀ§ ¸Þ´ºÀÇ li¿¡ ¸¶¿ì½º¿À¹ö µÇ¾úÀ» ¶§ ½ºÅ¸ÀÏ ¼³Á¤ */ 
+	color: red; /* ±Û¾¾ »ö »¡°£»ö */ 
+	background-color: #4d4d4d; /* ¹è°æ»öÀ» ¹àÀº È¸»öÀ¸·Î ¼³Á¤ */ 
 	} 
 	
 	.submenuLink {
-	 /* í•˜ìœ„ ë©”ë‰´ì˜ a íƒœê·¸ ìŠ¤íƒ€ì¼ ì„¤ì • */ 
-	 color: #2d2d2d; /* ê¸€ì”¨ ìƒ‰ì„ RGB(2D2D2D)ë¡œ ì„¤ì • */ 
-	 background-color: white; /* ë°°ê²½ìƒ‰ì„ í°ìƒ‰ìœ¼ë¡œ ì„¤ì • */ 
-	 border: solid 1px black; /* í…Œë‘ë¦¬ë¥¼ ì„¤ì • */ 
-	 margin-top: -1px; /* ìœ„ ì¹¸ì˜ í•˜ë‹¨ í…Œë‘ë¦¬ì™€ ì•„ëž˜ì¹¸ì˜ ìƒë‹¨ í…Œë‘ë¦¬ê°€ ê²¹ì³ì§€ë„ë¡ ì„¤ì • */ 
+	 /* ÇÏÀ§ ¸Þ´ºÀÇ a ÅÂ±× ½ºÅ¸ÀÏ ¼³Á¤ */ 
+	 color: #2d2d2d; /* ±Û¾¾ »öÀ» RGB(2D2D2D)·Î ¼³Á¤ */ 
+	 background-color: white; /* ¹è°æ»öÀ» Èò»öÀ¸·Î ¼³Á¤ */ 
+	 border: solid 1px black; /* Å×µÎ¸®¸¦ ¼³Á¤ */ 
+	 margin-top: -1px; /* À§ Ä­ÀÇ ÇÏ´Ü Å×µÎ¸®¿Í ¾Æ·¡Ä­ÀÇ »ó´Ü Å×µÎ¸®°¡ °ãÃÄÁöµµ·Ï ¼³ */ 
 	 } 
 	 
 	 .longLink { 
-	 /* ì¢€ ë” ê¸´ ë©”ë‰´ ìŠ¤íƒ€ì¼ ì„¤ì • */ 
-	 width: 190px; /* ë„“ì´ëŠ” 190pxë¡œ ì„¤ì • */ 
+	 /* Á» ´õ ±ä ¸Þ´º ½ºÅ¸ÀÏ ¼³Á¤ */ 
+	 width: 190px; /* ³ÐÀÌ´Â 190px·Î ¼³Á¤ */ 
 	 } 
 	 
 	 .submenu { 
-	 /* í•˜ìœ„ ë©”ë‰´ ìŠ¤íƒ€ì¼ ì„¤ì • */ 
-	 position: absolute; /* htmlì˜ flowì— ì˜í–¥ì„ ë¯¸ì¹˜ì§€ ì•Šê²Œ absolute ì„¤ì • */ 
-	 height: 0px; /* ì´ˆê¸° ë†’ì´ëŠ” 0pxë¡œ ì„¤ì • */ 
-	 overflow: hidden; /*ì‹¤ ë‚´ìš©ì´ ë†’ì´ë³´ë‹¤ ì»¤ì§€ë©´ í•´ë‹¹ ë‚´ìš© ê°ì¶¤ */ 
-	 transition: height .2s; /* heightë¥¼ ë³€í™” ì‹œì¼°ì„ ë•Œ 0.2ì´ˆê°„ ë³€í™” ë˜ë„ë¡ ì„¤ì •(ê¸°ë³¸) */ 
-	 -webkit-transition: height .2s; /* heightë¥¼ ë³€í™” ì‹œì¼°ì„ ë•Œ 0.2ì´ˆê°„ ë³€í™” ë˜ë„ë¡ ì„¤ì •(êµ¬ë²„ì „ í¬ë¡¬/ì‚¬íŒŒë¼ã…£) */ 
-	 -moz-transition: height .2s; /* heightë¥¼ ë³€í™” ì‹œì¼°ì„ ë•Œ 0.2ì´ˆê°„ ë³€í™” ë˜ë„ë¡ ì„¤ì •(êµ¬ë²„ì „ íŒŒí­) */ 
-	 -o-transition: height .2s; /* heightë¥¼ ë³€í™” ì‹œì¼°ì„ ë•Œ 0.2ì´ˆê°„ ë³€í™” ë˜ë„ë¡ ì„¤ì •(êµ¬ë²„ì „ ì˜¤íŽ˜ë¼) */ 
+	 /* ÇÏÀ§ ¸Þ´º ½ºÅ¸ÀÏ ¼³Á¤ */ 
+	 position: absolute; /* htmlÀÇ flow¿¡ ¿µÇâÀ» ¹ÌÄ¡Áö ¾Ê°Ô absolute ¼³Á¤ */ 
+	 height: 0px; /* ÃÊ±â ³ôÀÌ´Â 0px·Î ¼³Á¤ */ 
+	 overflow: hidden; /* ½Ç ³»¿ëÀÌ ³ôÀÌº¸´Ù Ä¿Áö¸é ÇØ´ç ³»¿ë °¨Ãã */ 
+	 transition: height .2s; /* height¸¦ º¯È­ ½ÃÄ×À» ¶§ 0.2ÃÊ°£ º¯È­ µÇµµ·Ï ¼³Á¤(±âº») */ 
+	 -webkit-transition: height .2s; /* height¸¦ º¯È­ ½ÃÄ×À» ¶§ 0.2ÃÊ°£ º¯È­ µÇµµ·Ï ¼³Á¤(±¸¹öÀü Å©·Ò/»çÆÄ¶ó¤Ó) */ 
+	 -moz-transition: height .2s; /* height¸¦ º¯È­ ½ÃÄ×À» ¶§ 0.2ÃÊ°£ º¯È­ µÇµµ·Ï ¼³Á¤(±¸¹öÀü ÆÄÆø) */ 
+	 -o-transition: height .2s; /* height¸¦ º¯È­ ½ÃÄ×À» ¶§ 0.2ÃÊ°£ º¯È­ µÇµµ·Ï ¼³Á¤(±¸¹öÀü ¿ÀÆä¶ó) */ 
 	 } 
 	 
 	 .topMenuLi:hover .submenu {
-	  /* ìƒìœ„ ë©”ë‰´ì— ë§ˆìš°ìŠ¤ ëª¨ë²„í•œ ê²½ìš° ê·¸ ì•ˆì˜ í•˜ìœ„ ë©”ë‰´ ìŠ¤íƒ€ì¼ ì„¤ì • */
-	  height: 93px; /* ë†’ì´ë¥¼ 93pxë¡œ ì„¤ì • */ 
-	  /*overflow: visible;*/
+	  /* »óÀ§ ¸Þ´º¿¡ ¸¶¿ì½º ¸ð¹öÇÑ °æ¿ì ±× ¾ÈÀÇ ÇÏÀ§ ¸Þ´º ½ºÅ¸ÀÏ ¼³Á¤ */
+	  height: 93px; /* ³ôÀÌ¸¦ 93px·Î ¼³Á¤ */ 
 	  }
 	  
 	   .submenuLink:hover { 
-	   /* í•˜ìœ„ ë©”ë‰´ì˜ a íƒœê·¸ì˜ ë§ˆìš°ìŠ¤ ì˜¤ë²„ ìŠ¤íƒ€ì¼ ì„¤ì • */ 
-	   color: red; /* ê¸€ì”¨ìƒ‰ì„ ë¹¨ê°„ìƒ‰ìœ¼ë¡œ ì„¤ì • */ 
-	   background-color: #dddddd; /* ë°°ê²½ì„ RGB(DDDDDD)ë¡œ ì„¤ì • */
+	   /* ÇÏÀ§ ¸Þ´ºÀÇ a ÅÂ±×ÀÇ ¸¶¿ì½º ¿À¹ö ½ºÅ¸ÀÏ ¼³Á¤ */ 
+	   color: red; /* ±Û¾¾»öÀ» »¡°£»öÀ¸·Î ¼³Á¤ */ 
+	   background-color: #dddddd; /* ¹è°æÀ» RGB(DDDDDD)·Î ¼³Á¤ */ 
 	   } 
 	   
 	   </style>
-
-<meta charset="UTF-8">
+<meta charset="EUC-KR">
 <title>TMI :: TooMuchItem</title>
 </head>
 <body>
 	<h2>TMI :: TooMuchItem</h2>
 	<div class = "greetID">
-		<%	// ì„¸ì…˜ ê°€ì ¸ì™€ì„œ ì´ë¦„ ë„ìš°ê¸°
-			Statement stmt = null;
-			String id = session.getAttribute("userSession") + "";
-			Connection conn = DBUtil.getMySQLConnection();
-			String sql = "SELECT Name FROM CUSTOMER WHERE Id = ?";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
-			ResultSet rs = pstmt.executeQuery();
-			String name = "";
-			while(rs.next()){
-				name = rs.getString("Name");
-			}
-			DBUtil.close(conn); conn = null;
-			DBUtil.close(stmt); stmt = null;
-			DBUtil.close(pstmt); pstmt = null;
-			DBUtil.close(rs); rs = null;
-			sql = "";
+		<%	// ¼¼¼Ç °¡Á®¿Í¼­ ÀÌ¸§ ¶ç¿ì±â
+			String name = session.getAttribute("userSession") + "";
 		%>
 		<a href="Main.jsp" style="float:left;"> HOME </a>
-		<b> <%=name%>ë‹˜ &nbsp; </b>
+		<b> <%=name%>´Ô &nbsp; </b>
 		
 		<% if(name.equals("admin")) { %>
-		<a href="Page_admin.jsp"> ê´€ë¦¬ìž </a> |	<%} %>
-		<a href="my_page.jsp">ë§ˆì´íŽ˜ì´ì§€</a>
-		<a href="shoppingbag.jsp">ìž¥ë°”êµ¬ë‹ˆ</a>
-		<a href="_logout.jsp"> ë¡œê·¸ì•„ì›ƒ </a>
+		<a href="Page_admin.jsp"> °ü¸®ÀÚ </a> |	<%} %>
+		<a href="my_page.jsp">¸¶ÀÌÆäÀÌÁö</a>
+		<a href="_logout.jsp"> ·Î±×¾Æ¿ô </a>
 		
 	</div>
 	
 	<form action = "search.jsp">
-	<input type = "search" name = "searchitem"/>
+	<input type = "text" name = "searchitem"/>
 	<input type= "submit" value = "SEARCH"/>
 	</form>
 	
-	<nav id="topMenu" >
-		<ul>
+	
 		<%
-			conn = DBUtil.getMySQLConnection();
-			stmt = conn.createStatement();
-			sql = "select distinct Main_category from CATEGORY";
-			rs = stmt.executeQuery(sql);
-			String Maincate;
-			int count = 0;
-			while(rs.next()){
-			Maincate = rs.getString("Main_category");
-			if(count != 0)
-				out.println("<li>|</li>");
-		%>
-		<li class="topMenuLi">
-		<a class="menuLink"><%=Maincate%></a>
-		<ul class="submenu">
-		<%
-			Connection conn1 = DBUtil.getMySQLConnection();
-			String sql1 = "select distinct Sub_category from CATEGORY where Main_category = ?";
-			pstmt = conn1.prepareStatement(sql1);
-			pstmt.setString(1, Maincate);
-			ResultSet rs1=pstmt.executeQuery();
-			String subcate;
-			while(rs1.next()){
-				subcate = rs1.getString("Sub_category");
-		%>
-			<li>
-			<a class="submenuLink" href="cateresult.jsp?subcate=<%=subcate%>"><%=subcate%></a>
-			</li>
-			<%
-			}
-			DBUtil.close(conn1); conn1 = null;
-			DBUtil.close(pstmt); pstmt = null;
-			DBUtil.close(rs1); rs1 = null;
-			sql1 = "";
-			%>
-		</ul>
-		</li>
-	<%
-	count++;}
-	DBUtil.close(conn); conn = null;
-	DBUtil.close(stmt); stmt = null;
-	DBUtil.close(rs); rs = null;
-	sql = "";
-	%>
-	</ul>
-	</nav>
-	</br>
-	</br>
-	</br>
-	</br>
-	</br>
-	</br>
-	</br>
-	<h3>ì „ì²´ìƒí’ˆ</h3>
-		<%
-		conn = DBUtil.getMySQLConnection();
-		stmt = conn.createStatement();
-		sql = "select * from Item";
-		rs = stmt.executeQuery(sql);
+		Connection conn = DBUtil.getMySQLConnection();
+		Statement stmt = conn.createStatement();
+		String sql = "select * from ITEM";
+		ResultSet rs = stmt.executeQuery(sql);
 		String Ino = "";
 		String Itemname = "";
 		String image = "";
@@ -199,13 +126,13 @@
 		while(rs.next()){
 			Ino = rs.getString("Item_number");
 			Itemname = rs.getString("Item_name");
-			image = rs.getString("Item_image");
+			//ÀÌ°Å image = rs.getString("Item_image");
 			Itemprice = rs.getInt("Price");
 		%>
 		<div class="box">
 			<div class="image-box">
-				<a href="board.jsp?Ino=<%=Ino %>">
-					<img src="<%=image%>" width="300" height="300">
+				<a href="Board.jsp?Ino=<%=Ino %>">
+					//ÀÌ°Å <img src="<%=image%>" width="300" height="300">
 				</a>
 			</div>
 
@@ -214,15 +141,10 @@
 			    	<%=Itemname%>
 			    </div>
                 <div class="box-itemprice">
-				 	<%=Itemprice%>ì›
+				 	<%=Itemprice%>¿ø
 				</div>
 			</div>
 		</div>
-		<%}
-		DBUtil.close(conn); conn = null;
-		DBUtil.close(stmt); stmt = null;
-		DBUtil.close(rs); rs = null;
-		sql = "";
-		%>
+		<%} %>
 </body>
 </html>
