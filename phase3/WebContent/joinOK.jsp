@@ -68,19 +68,16 @@
 	<%
 	} catch (Exception e) {
 	%>
-	<script>
-	alert("가입에 실패했습니다."); 
+	<br><br>
+	<font size="4" color = "gray">가입에 실패했습니다.</font>
+	<br><br>
 	<input type="button" value="첫 화면으로" onclick = "javascript:location.href='login.html'"/>
-	</script>
 	<% }%>
 <%
 	DBUtil.close(pstmt);
 	DBUtil.close(conn);
 %>
 
-	<br><br>
-	<font size="4" color = "gray">가입에 실패했습니다.</font>
-	<br><br>
-	<input type="button" value="첫 화면으로" onclick = "javascript:location.href='login.html'"/>
+	
 </body>
 </html>

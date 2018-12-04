@@ -134,7 +134,7 @@ String query = "";
 			DBUtil.close(rs1);rs1 = null;
 
 			/*매장에서 구매할 제품의 현재 재고, 제품 사야할 수량, 받아와서 재고깎기*/
-			sql = "SELECT distinct C.Name, I.Item_number, H.Stock, B.Quantity, R.Retailer_name "+
+			sql = "SELECT distinct C.Name, I.Item_number, H.Stock, B.Quantity, R.Retailer_number "+
 					"FROM SHOPPINGBAG B, CUSTOMER C, RETAILER R, HAS_A H, ITEM I "+
 					"WHERE B.Customer_id = C.Id "+
 					"AND H.Ino = B.Purchase_item "+
@@ -163,6 +163,12 @@ String query = "";
 			/**/
 			
 			while(rs1.next()){
+				inum = rs1.getString("I.Item_number");
+				quan = rs1.getInt("B.Quantity");
+				Rnum = rs1.getInt("R.Retailer_number");
+				stock = rs1.getInt("H.Stock");
+				nowstock = stock-quan;
+				
 				/*구매한 매장 재고 깎기*/
 				sql = "UPDATE HAS_A SET Stock = ? where Ino=? and Rno=?";
 				pstmt2 = conn.prepareStatement(sql);
@@ -180,7 +186,7 @@ String query = "";
 				pstmt2 = conn.prepareStatement(sql);
 				pstmt2.setInt(1,order_num);
 				pstmt2.setString(2,inum);
-				pstmt2.setInt(3,Rnum);
+				pstmt2.setInt(3,quan);
 				pstmt2.executeUpdate();
 			}
 			
@@ -269,7 +275,7 @@ String query = "";
 				pstmt2 = conn.prepareStatement(sql);
 				pstmt2.setInt(1,order_num);
 				pstmt2.setString(2,inum);
-				pstmt2.setInt(3,Rnum);
+				pstmt2.setInt(3,quan);
 				pstmt2.executeUpdate();
 			}
 			

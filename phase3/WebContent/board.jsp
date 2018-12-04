@@ -215,7 +215,7 @@
 		%>
 		<div class="box">
 			<div class="image-box">
-				<a href="Board.jsp?Ino=<%=Ino %>">
+				<a href="board.jsp?Ino=<%=Ino %>">
 					<img src="<%=image%>" width="300" height="300">
 				</a>
 			</div>

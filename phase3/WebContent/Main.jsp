@@ -2,12 +2,14 @@
     pageEncoding="UTF-8"%>
 <%@ page language="java" import="java.text.*,java.sql.*" %>
 <%@ page language="java" import="phase3.*" %>
-<% request.setCharacterEncoding("UTF-8"); %>
+<% request.setCharacterEncoding("UTF-8");
+	Connection conn = DBUtil.getMySQLConnection();%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <style>
+
 	#topMenu
 	{ 
 	height: 30px; /* 메인 메뉴의 높이 */
@@ -100,7 +102,7 @@
 			Statement stmt = null;
 			String name = session.getAttribute("userSession") + "";
 			String id = session.getAttribute("s_id") + "";
-			Connection conn = DBUtil.getMySQLConnection();
+			conn = DBUtil.getMySQLConnection();
 			PreparedStatement pstmt;
 			ResultSet rs;
 			DBUtil.close(conn); conn = null;
@@ -177,15 +179,92 @@
 	</br>
 	</br>
 	</br>
+	
+	<%
+	/*이용자의 성별과 나이 구하기*/
+	conn = DBUtil.getMySQLConnection();
+	String query = "SELECT * FROM CUSTOMER WHERE Id = ?";
+	pstmt = conn.prepareStatement(query);
+	pstmt.setString(1, id);
+	rs = pstmt.executeQuery();
+	String sex = "";
+	int Age = 0;
+	while(rs.next()){
+		sex = rs.getString("Sex");
+		Age = rs.getInt("Age");
+	}
+	int age = Age - Age%10;
+	/*이용자의 성별과 나이에 맞는 상품 추천*/
+	%>
+	<b>🎁🎁<%=name%>님께 추천드리는 상품🎁🎁<br></b>
+	<b><%=age%></b>대 <%if(sex.equals("F"))out.println("<b>여성</b>"); else out.println("<b>남성</b>");%>이 자주 구매한 제품이에요!<br>
+	<%
+	conn = DBUtil.getMySQLConnection();
+	sql = "Select I.Item_number, I.Item_name, I.Price, I.Item_image, sum(L.Pquantity) "+
+			"From ORDER_LIST L, ITEM I, CUSTOMER C, ORDER1 O "+
+			"WHERE L.Order_num = O.Order_number "+
+			"And L.Pitem = I.Item_number "+
+			"And C.Id = O.Cid "+
+			"And C.Sex = ? "+
+			"And C.Age between ? and ? "+
+			"GROUP BY I.Item_number "+
+			"ORDER BY sum(L.Pquantity) DESC LIMIT 5";
+	pstmt = conn.prepareStatement(sql);
+	if(sex.equals("F")) pstmt.setString(1, "F");
+	else pstmt.setString(1, "M");
+	pstmt.setInt(2, age);
+	pstmt.setInt(3, age+9);
+	rs = pstmt.executeQuery();
+
+	String Itemname = "";
+	String image = "";
+	String Ino = "";
+	int Itemprice;
+	int i = 1;
+	
+	while(rs.next()){
+		out.println("<h2>"+i+"</h2>");
+		Ino = rs.getString("Item_number");
+		Itemname = rs.getString("Item_name");
+		image = rs.getString("Item_image");
+		Itemprice = rs.getInt("Price");
+	%>
+	<div class="box">
+		<div class="image-box">
+			<a href="board.jsp?Ino=<%=Ino %>">
+				 <img src="<%=image%>" width="300" height="300">
+			</a>
+		</div>
+
+        <div class="box-underimage">
+	    	<div class="box-itemname">
+		    	<%=Itemname%>
+		    </div>
+            <div class="box-itemprice">
+			 	<%=Itemprice%>원
+			</div>
+		</div>
+	</div>
+	<%
+	i++;} 
+	DBUtil.close(conn);
+	DBUtil.close(pstmt);
+	DBUtil.close(rs);
+	sql = "";
+	Itemname = "";
+	image = "";
+	Ino = "";
+	Itemprice = 0;
+	%>
+	🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁🎁<br><br>
+	
+		<h2>전체상품</h2>
 		<%
 		conn = DBUtil.getMySQLConnection();
 		stmt = conn.createStatement();
 		sql = "select * from ITEM";
 		rs = stmt.executeQuery(sql);
-		String Ino = "";
-		String Itemname = "";
-		String image = "";
-		int Itemprice;
+		Ino = "";
 		while(rs.next()){
 			Ino = rs.getString("Item_number");
 			Itemname = rs.getString("Item_name");
