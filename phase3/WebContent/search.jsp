@@ -99,21 +99,13 @@
 	<div class = "greetID">
 		<%	// 세션 가져와서 이름 띄우기
 			Statement stmt = null;
-			String id = session.getAttribute("userSession") + "";
+			String name = session.getAttribute("userSession") + "";
+			String id = session.getAttribute("s_id") + "";
 			Connection conn = DBUtil.getMySQLConnection();
-			String sql = "SELECT Name FROM CUSTOMER WHERE Id = ?";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
-			ResultSet rs = pstmt.executeQuery();
-			String name = "";
-			while(rs.next()){
-				name = rs.getString("Name");
-			}
+			PreparedStatement pstmt;
+			ResultSet rs;
 			DBUtil.close(conn); conn = null;
-			DBUtil.close(stmt); stmt = null;
-			DBUtil.close(pstmt); pstmt = null;
-			DBUtil.close(rs); rs = null;
-			sql = "";
+			String sql = "";
 		%>
 		<a href="Main.jsp" style="float:left;"> HOME </a>
 		<b> <%=name%>님 &nbsp; </b>

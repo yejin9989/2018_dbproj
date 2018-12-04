@@ -97,7 +97,14 @@
 	<h2>TMI :: TooMuchItem</h2>
 	<div class = "greetID">
 		<%	// 세션 가져와서 이름 띄우기
+			Statement stmt = null;
 			String name = session.getAttribute("userSession") + "";
+			String id = session.getAttribute("s_id") + "";
+			Connection conn = DBUtil.getMySQLConnection();
+			PreparedStatement pstmt;
+			ResultSet rs;
+			DBUtil.close(conn); conn = null;
+			String sql = "";
 		%>
 		<a href="Main.jsp" style="float:left;"> HOME </a>
 		<b> <%=name%>님 &nbsp; </b>
@@ -111,16 +118,70 @@
 	</div>
 	
 	<form action = "search.jsp">
-	<input type = "text" name = "searchitem"/>
+	<input type = "search" name = "searchitem"/>
 	<input type= "submit" value = "SEARCH"/>
 	</form>
 	
-	
+	<nav id="topMenu" >
+		<ul>
 		<%
-		Connection conn = DBUtil.getMySQLConnection();
-		Statement stmt = conn.createStatement();
-		String sql = "select * from ITEM";
-		ResultSet rs = stmt.executeQuery(sql);
+			conn = DBUtil.getMySQLConnection();
+			stmt = conn.createStatement();
+			sql = "select distinct Main_category from CATEGORY";
+			rs = stmt.executeQuery(sql);
+			String Maincate;
+			int count = 0;
+			while(rs.next()){
+			Maincate = rs.getString("Main_category");
+			if(count != 0)
+				out.println("<li>|</li>");
+		%>
+		<li class="topMenuLi">
+		<a class="menuLink"><%=Maincate%></a>
+		<ul class="submenu">
+		<%
+			Connection conn1 = DBUtil.getMySQLConnection();
+			String sql1 = "select distinct Sub_category from CATEGORY where Main_category = ?";
+			pstmt = conn1.prepareStatement(sql1);
+			pstmt.setString(1, Maincate);
+			ResultSet rs1=pstmt.executeQuery();
+			String subcate;
+			while(rs1.next()){
+				subcate = rs1.getString("Sub_category");
+		%>
+			<li>
+			<a class="submenuLink" href="cateresult.jsp?subcate=<%=subcate%>"><%=subcate%></a>
+			</li>
+			<%
+			}
+			DBUtil.close(conn1); conn1 = null;
+			DBUtil.close(pstmt); pstmt = null;
+			DBUtil.close(rs1); rs1 = null;
+			sql1 = "";
+			%>
+		</ul>
+		</li>
+	<%
+	count++;}
+	DBUtil.close(conn); conn = null;
+	DBUtil.close(stmt); stmt = null;
+	DBUtil.close(rs); rs = null;
+	sql = "";
+	%>
+	</ul>
+	</nav>
+	</br>
+	</br>
+	</br>
+	</br>
+	</br>
+	</br>
+	</br>
+		<%
+		conn = DBUtil.getMySQLConnection();
+		stmt = conn.createStatement();
+		sql = "select * from ITEM";
+		rs = stmt.executeQuery(sql);
 		String Ino = "";
 		String Itemname = "";
 		String image = "";
