@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page language="java" import="java.text.*,java.sql.*" %>
 <%@ page language="java" import="phase3.*" %>
@@ -104,6 +104,7 @@
 		<% if(name.equals("admin")) { %>
 		<a href="Page_admin.jsp"> 관리자 </a> |	<%} %>
 		<a href="my_page.jsp">마이페이지</a>
+		<a href="shoppingbag.jsp">장바구니</a>
 		<a href="_logout.jsp"> 로그아웃 </a>
 		
 	</div>
@@ -131,7 +132,7 @@
 		%>
 		<div class="box">
 			<div class="image-box">
-				<a href="Board.jsp?Ino=<%=Ino %>">
+				<a href="board.jsp?Ino=<%=Ino %>">
 					 <img src="<%=image%>" width="300" height="300">
 				</a>
 			</div>
