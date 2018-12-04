@@ -8,12 +8,12 @@
 </head>
 <body>
 	<%
-		String id = (String)session.getAttribute("sessionID");
+		String id = (String)session.getAttribute("s_id");
 		String pw = request.getParameter("password");
 		
 		Connection conn = DBUtil.getMySQLConnection();
 		
-		String sql = "delete from CUSTOMER where ID = ?, PW = ?";
+		String sql = "delete from CUSTOMER where Id = ?, PW = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		
 		pstmt.setString(1, id);
